@@ -38,6 +38,19 @@ class _QuizPageState extends State<QuizPage> {
 
   List<bool> answers = [false, true, true];*/
 
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = _quizBrain.getQuestionAnswer();
+    if (userPickedAnswer == correctAnswer) {
+      print('User got it right');
+    } else {
+      print('User got it wrong');
+    }
+    //The user picked true.
+    setState(() {
+      _quizBrain.nextQuestion();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -75,18 +88,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer =
-                    //quizBrain.questionbank[questionNumber].questionAnswer;
-                    _quizBrain.getQuestionAnswer();
-                if (correctAnswer == true) {
-                  print('User got it right');
-                } else {
-                  print('User got it wrong');
-                }
-                //The user picked true.
-                setState(() {
-                  _quizBrain.nextQuestion();
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -105,17 +107,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer =
-                    //quizBrain.questionbank[questionNumber].questionAnswer;
-                    _quizBrain.getQuestionAnswer();
-                if (correctAnswer == false) {
-                  print('User got it right');
-                } else {
-                  print('User got it wrong');
-                }
-                setState(() {
-                  _quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
               },
             ),
           ),
