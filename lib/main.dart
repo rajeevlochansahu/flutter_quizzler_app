@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quizzler_app/qiiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(Quizzler());
 
@@ -40,15 +41,65 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = _quizBrain.getQuestionAnswer();
-    if (userPickedAnswer == correctAnswer) {
-      print('User got it right');
-    } else {
-      print('User got it wrong');
-    }
-    //The user picked true.
+
     setState(() {
-      _quizBrain.nextQuestion();
+      //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If so,
+      //On the next line, you can also use if (quizBrain.isFinished()) {}, it does the same thing.
+      if (_quizBrain.isFinished() == true) {
+        //TODO Step 4 Part A - show an alert using rFlutter_alert,
+
+        //This is the code for the basic alert from the docs for rFlutter Alert:
+        //Alert(context: context, title: "RFLUTTER", desc: "Flutter is awesome.").show();
+
+        //Modified for our purposes:
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+        ).show();
+
+        //TODO Step 4 Part C - reset the questionNumber,
+        _quizBrain.resetQuestionBank();
+
+        //TODO Step 4 Part D - empty out the scoreKeeper.
+        scoreKeeper = [];
+      } else {
+        if (userPickedAnswer == correctAnswer) {
+          print('User got it right');
+          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+        } else {
+          print('User got it wrong');
+          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+        }
+        //The user picked true.
+
+        _quizBrain.nextQuestion();
+      }
     });
+  }
+
+  // Alert with single button.
+  _onAlertButtonPressed(context) {
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: "RFLUTTER ALERT",
+      desc: "Flutter is more awesome with RFlutter Alert.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "COOL",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => {
+            Navigator.pop(context),
+            scoreKeeper.clear(),
+            _quizBrain.resetQuestionBank()
+          },
+          width: 120,
+        )
+      ],
+    ).show();
   }
 
   @override
