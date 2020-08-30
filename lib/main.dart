@@ -3,7 +3,7 @@ import 'package:flutter_quizzler_app/qiiz_brain.dart';
 
 void main() => runApp(Quizzler());
 
-QuizBrain quizBrain = QuizBrain();
+QuizBrain _quizBrain = QuizBrain();
 
 class Quizzler extends StatelessWidget {
   @override
@@ -38,8 +38,6 @@ class _QuizPageState extends State<QuizPage> {
 
   List<bool> answers = [false, true, true];*/
 
-  int questionNumber = 0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +50,8 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionbank[questionNumber].questionText,
+                //quizBrain.questionbank[questionNumber].questionText,
+                _quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -77,7 +76,8 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 bool correctAnswer =
-                    quizBrain.questionbank[questionNumber].questionAnswer;
+                    //quizBrain.questionbank[questionNumber].questionAnswer;
+                    _quizBrain.getQuestionAnswer();
                 if (correctAnswer == true) {
                   print('User got it right');
                 } else {
@@ -85,9 +85,8 @@ class _QuizPageState extends State<QuizPage> {
                 }
                 //The user picked true.
                 setState(() {
-                  questionNumber++;
+                  _quizBrain.nextQuestion();
                 });
-                print(questionNumber);
               },
             ),
           ),
@@ -107,16 +106,16 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked false.
                 bool correctAnswer =
-                    quizBrain.questionbank[questionNumber].questionAnswer;
+                    //quizBrain.questionbank[questionNumber].questionAnswer;
+                    _quizBrain.getQuestionAnswer();
                 if (correctAnswer == false) {
                   print('User got it right');
                 } else {
                   print('User got it wrong');
                 }
                 setState(() {
-                  questionNumber++;
+                  _quizBrain.nextQuestion();
                 });
-                print(questionNumber);
               },
             ),
           ),
